@@ -32,6 +32,7 @@ jobs:
         path: |
           smoke-test-report.txt
           app-logs.txt
+        retention: 2
   artifactory-review-job:
     needs: app-deploy-job
     runs-on: ubuntu-latest
