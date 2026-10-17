@@ -1,0 +1,52 @@
+name: Artifact test
+
+on:
+  workflow_dispatch
+
+jobs:
+  app-deploy-job:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout_code
+      uses: actions/checkout@v7
+    - name: Docker image build
+      uses: docker/build-push-action@v7
+      with:
+        context: .
+        push: false
+        tags: app:v1.0.1
+    - name: Deploy App
+      run: |
+        docker run -d -p 5000:5000 --name flask_app app:v1.0.1
+    - name: smoke test
+      run: |
+        curl localhost:5000 >> smoke-test-report.txt
+        curl localhost:5000/health >> smoke-test-report.txt
+    - name: Export containers log
+      run: |
+        docker logs flask_app >> app-logs.txt
+    - name: upload artifact
+      uses: actions/upload-artifact@v7
+      with:
+        name: app-ci-artifact
+        path: |
+          smoke-test-report.txt
+          app-logs.txt
+  artifactory-review-job:
+    needs: app-deploy-job
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download Artifact
+      uses: actions/download-artifact@v8
+      with:
+        name: app-ci-artifact
+    - name: Review Atrifact 
+      run: |
+        echo "---------Smoke Test-------------"
+        cat smoke-test-report.txt
+        echo "---------------------------------"
+        echo "----------App logs---------------"
+        cat app-logs.txt
+    
+    
+    
