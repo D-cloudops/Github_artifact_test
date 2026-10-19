@@ -22,7 +22,6 @@ jobs:
        run: |
         pip install -r requirements.txt
         python app.py &
-        APP_ID = $!
 
         sleep 5
         curl --fail http://127.0.0.1:5000/health
@@ -31,5 +30,3 @@ jobs:
 
         echo "Matrix Python Version : ${{ matrix.python-version }}"
         python --version
-
-        kill $APP_PID
