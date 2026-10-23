@@ -1,0 +1,23 @@
+name: Refactored workflow
+
+on:
+    workflow_dispatch:
+        inputs:
+            image_push:
+                required: true
+                default: true
+                type: boolean
+
+jobs:
+    docker_build_push:
+        runs-on: ubuntu-latest
+        steps:
+        - name: checkout_code
+          uses: actions/checkout@v7
+        - name: docker build & push
+          uses: ./.github/actions/docker-build-push/
+          with:
+            docker_username: ${{ vars.dockerhub_username }}
+            docker_token: ${{ secrets.dockerhub_token }}
+            image_push: ${{ inputs.image_push }}
+            image_tag: ${{vars.dockerhub_username}}/simpleapp:${{ job.check_run_id }}
