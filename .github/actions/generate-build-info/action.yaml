@@ -21,10 +21,13 @@ runs:
     shell: bash
     run: |
       set -e
+
+      cat << EOF > output/info.txt
       echo "application_name: ${{ inputs.application_name }}"
       echo "application_url: ${{ inputs.application_url}}"
       echo "BUild Number: ${{ github.run_number }}"
-
+      EOF
+      
       echo "----------Displaying output file------------"
       cat output/info.txt
       echo "---------------------------------------------"
