@@ -1,0 +1,23 @@
+name: using build info action
+
+on: workflow_dispatch
+
+jobs:
+    Build_info:
+        runs-on: ubuntu-latest
+        steps:
+        - name: checkout_code
+          uses: actions/checkout@v7
+        - name: build_info_
+          id: build_data
+          uses: ./.github/actons/generate-build-info
+          with: 
+            application_name: testing
+            application_url: test.in
+        - name: build info artifact
+          uses: actions/checkout@v7
+          with:
+            name: build info
+            path: ${{ steps.build_data.outputs.build-info-path }}
+            retention: 1
+        
