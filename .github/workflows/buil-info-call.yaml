@@ -19,5 +19,5 @@ jobs:
           with:
             name: build info
             path: ${{ steps.build_data.outputs.build-info-path }}
-            retention: 1
+            retention-days: 1
         
