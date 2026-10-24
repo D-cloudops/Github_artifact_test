@@ -1,5 +1,7 @@
 name: Build info
 
+description: Reusable build info
+
 inputs:
    application_name:
       required: true
@@ -12,14 +14,15 @@ outputs:
    build-info-path:
       value: output/info.txt
 
-jobs:
+runs:
   using: composite
   steps:
   - name: displaying build info
-    runs: |
+    shell: bash
+    run: |
       set -e
       echo "application_name: ${{ inputs.application_name }}"
-      echo "application_url: ${{inputs.application_url}}"
+      echo "application_url: ${{ inputs.application_url}}"
       echo "BUild Number: ${{ github.run_number }}"
 
       echo "----------Displaying output file------------"
