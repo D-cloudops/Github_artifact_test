@@ -2,11 +2,11 @@ name: Build info
 
 inputs:
    application_name:
-       required: true
-       type: string
-    application_url:
-       required: true
-       type: string
+      required: true
+      type: string
+   application_url:
+      required: true
+      type: string
 
 outputs:
    build-info-path:
